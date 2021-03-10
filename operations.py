@@ -10,13 +10,18 @@ class Operations(object):
         self.restaurantName = 'Empty Restaurant'#Nombre restaura
         self.saveListInFirstPosition = ' '#Lista de 1.er posicion de la lista de listas[0][0], con esto no tengo problema porque es la primer linea, no tengo que tener pierde en teoria
         self.finalRN = ' '#Aqui guardo el nombre del restaurante, este valor se obtiene del retorno de la cierta funcion
+        self.ordersWithoutLJ = ' '#Esta lista es 
+        self.indexesForEmptyLists = ' '
     
     def uploadOrder(self):
         Tk().withdraw()
         self.orderPath = askopenfilename()
 
         if self.orderPath:
-            print(self.orderPath)
+            # print(self.orderPath)
+            print('-----------------------------')
+            print('Archivo cargado exitosamente!')
+            print('-----------------------------')
         else:
             print('No se selecciono ningun archivo')
             """
@@ -34,6 +39,8 @@ class Operations(object):
         Operations.listingOrders(self)
         self.finalRN = Operations.gettingRestaurantName(self)
         print('nombre del restaurante: ',self.finalRN)
+        Operations.deletingLineJumps(self)
+        Operations.gettingCleanOrders(self)
     
     @staticmethod
     def readOrderFile(self):
@@ -43,9 +50,7 @@ class Operations(object):
         for line in self.readingOrder:
             self.linesInlist.append(line)
         self.readingOrder.close()
-        print('-----------------------------')
-        print('Archivo cargado exitosamente!')
-        print('-----------------------------')
+        
         # print(self.linesInlist)
 
         # print(self.orderPath)
@@ -56,7 +61,7 @@ class Operations(object):
         
         for i in range(len(self.linesInlist)):
             self.listOfOrders.append([self.linesInlist[i]])
-        print(self.listOfOrders)
+        # print(self.listOfOrders)
     
     @staticmethod
     def gettingRestaurantName(self):
@@ -64,3 +69,26 @@ class Operations(object):
         rn = re.findall(r"'(.*?)'", self.saveListInFirstPosition, re.DOTALL)
         finalRN = rn[0]
         return finalRN
+
+    
+    @staticmethod
+    def deletingLineJumps(self):
+        for i, x in enumerate(self.listOfOrders):
+            for j, a in enumerate(x):
+                if "\n" in a:
+                    self.listOfOrders[i][j] = a.replace('\n', '')#ordersWithoutLineJumps
+    
+        # print('No saltos de linea: ',self.listOfOrders)
+    
+    @staticmethod
+    def gettingCleanOrders(self):
+        
+        
+        
+        self.listOfOrders = [i for i in self.listOfOrders if(i != [''])]
+        
+        print('lineas sin saltos de linea',self.listOfOrders)
+    
+
+
+
